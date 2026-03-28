@@ -1,6 +1,6 @@
-# 👁️ DermoVision AI: Multi-class Skin Lesion Classification
+# Multi-class Skin Lesion Classification
 
-DermoVision AI adalah sebuah proyek *Web App* berbasis *Deep Learning* yang dirancang untuk mengklasifikasikan 7 jenis lesi kulit secara otomatis. Proyek jangka pendek (Short-Term Project) dari organisasi IRIS ini menggunakan teknik **Transfer Learning** dengan arsitektur **EfficientNetB0** untuk mencapai keseimbangan antara akurasi prediksi yang tinggi dan efisiensi komputasi.
+Ini merupakan sebuah proyek *Web App* berbasis *Deep Learning* yang dirancang untuk mengklasifikasikan 7 jenis lesi kulit secara otomatis. Proyek jangka pendek (*Short-Term Project*) ini bertujuan untuk membantu mendeteksi penyakit kanker kulit dan lesi lainnya secara cepat dan akurat, menggunakan teknik **Transfer Learning** dengan arsitektur **EfficientNetB0** guna mencapai keseimbangan antara akurasi prediksi yang tinggi dan efisiensi komputasi.
 
 🚀 **Live Demo Tersedia:** [Coba DermoVision AI di sini!](https://huggingface.co/spaces/KepinYUUU/DermoVision-AI)
 
