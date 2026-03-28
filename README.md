@@ -1,9 +1,6 @@
-# 🩺 DermoVision AI: Multi-class Skin Lesion Classification
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange.svg)](https://tensorflow.org/)
-[![Flask](https://img.shields.io/badge/Flask-Web_Framework-lightgrey.svg)](https://flask.palletsprojects.com/)
+Multi-class Skin Lesion Classification
 
-DermoVision AI adalah proyek riset *Deep Learning* yang dirancang untuk mengklasifikasikan 7 jenis lesi kulit secara otomatis. Proyek ini menggunakan teknik **Transfer Learning** dengan arsitektur **EfficientNetB0** untuk mencapai keseimbangan antara akurasi tinggi dan efisiensi komputasi pada perangkat lokal.
+Merupakan proyek riset *Deep Learning* yang dirancang untuk mengklasifikasikan 7 jenis lesi kulit secara otomatis. Proyek ini menggunakan teknik **Transfer Learning** dengan arsitektur **EfficientNetB0** untuk mencapai keseimbangan antara akurasi tinggi dan efisiensi komputasi pada perangkat lokal.
 
 ---
 
