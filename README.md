@@ -1,21 +1,49 @@
-# Short-Term-Project-IRIS-Kelompok-M-Deteksi-Dini-Kanker-Kulit-
-Proyek Klasifikasi Lesi Kulit (HAM10000) melatih CNN (EfficientNetB0) untuk mendeteksi Melanoma dan penyakit kulit lainnya. Proses training, penanganan imbalance data, dan evaluasi dirangkum utuh dalam Jupyter Notebook. Repositori ini dilengkapi aplikasi web Flask sebagai simulasi penggunaan model.
-# DermoVision AI: Klasifikasi Penyakit Kulit (HAM10000)
+# 🩺 DermoVision AI: Multi-class Skin Lesion Classification
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange.svg)](https://tensorflow.org/)
+[![Flask](https://img.shields.io/badge/Flask-Web_Framework-lightgrey.svg)](https://flask.palletsprojects.com/)
 
-Proyek ini adalah implementasi *Deep Learning* untuk mendeteksi 7 jenis penyakit kulit menggunakan arsitektur **EfficientNetB0**. Proyek ini dikembangkan sebagai bagian dari *Short-Term Project* di organisasi IRIS.
+DermoVision AI adalah proyek riset *Deep Learning* yang dirancang untuk mengklasifikasikan 7 jenis lesi kulit secara otomatis. Proyek ini menggunakan teknik **Transfer Learning** dengan arsitektur **EfficientNetB0** untuk mencapai keseimbangan antara akurasi tinggi dan efisiensi komputasi pada perangkat lokal.
 
-## 🚀 Fitur Utama
-- **Model AI Tinggi Presisi**: Menggunakan *Transfer Learning* dengan EfficientNetB0.
-- **Handling Imbalance Data**: Menggunakan teknik *Class Weights* untuk menangani dominasi kelas tertentu.
-- **Web App Interface**: Prototipe berbasis Flask untuk simulasi deteksi secara *real-time*.
+---
+
+## 📌 Dataset: HAM10000
+Dataset yang digunakan adalah **HAM10000** ("Human Against Machine with 10,000 training images"). Proyek ini mengklasifikasikan gambar ke dalam 7 kategori klinis:
+1. **akiec**: Actinic keratoses
+2. **bcc**: Basal cell carcinoma
+3. **bkl**: Benign keratosis-like lesions
+4. **df**: Dermatofibroma
+5. **mel**: Melanoma (Kanker Ganas)
+6. **nv**: Melanocytic nevi
+7. **vasc**: Vascular lesions
+
+> **⚠️ Catatan Dataset:** Dikarenakan ukuran dataset asli mencapai **~6GB** (melebihi batas GitHub 100MB), repositori ini hanya menyertakan **`dataset_sample.zip`** berisi 35 gambar (5 per kelas) untuk keperluan *testing* cepat. Dataset utuh dapat diunduh di [Kaggle HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000).
+
+---
+
+## ⚙️ Detail Teknis & Alur Kerja
+### 1. Model Architecture
+- **Base Model**: EfficientNetB0 (Pre-trained on ImageNet).
+- **Custom Layers**: Global Average Pooling, Dropout (0.3), dan Dense Layer dengan aktivasi Softmax.
+- **Optimization**: Adam Optimizer dengan *Learning Rate Reduction* otomatis saat akurasi stagnan.
+
+### 2. Handling Data Imbalance
+Dataset ini sangat tidak seimbang (didominasi oleh kelas `nv`). Proyek ini menerapkan **Class Weights** saat proses *training* untuk memberikan bobot lebih tinggi pada kelas minoritas yang krusial seperti **Melanoma**, sehingga model tidak hanya pintar menebak kelas mayoritas.
+
+### 3. Image Pre-processing
+- Resizing gambar menjadi **224x224** piksel.
+- Normalisasi nilai pixel (Scaling).
+- Augmentasi data (Rotation, Zoom, Flip) untuk meningkatkan generalisasi model.
+
+---
 
 ## 📂 Struktur Repositori
-- `short-term.ipynb`: Notebook utama berisi proses EDA, Training, dan Evaluasi.
-- `app.py`: Backend server menggunakan Flask.
-- `templates/`: UI frontend (HTML & Tailwind CSS).
-- `dataset_sample.zip`: Sampel gambar (5 per kelas) untuk pengujian cepat.
-
-## 📊 Dataset
-Dataset asli menggunakan **HAM10000** yang tersedia di Kaggle.
-> **Catatan**: Karena batas ukuran file di GitHub, dataset utuh (>2GB) tidak diunggah. Silakan unduh dataset resmi melalui [Link Kaggle ini](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000). Gunakan `dataset_sample.zip` di repo ini jika ingin melakukan pengujian aplikasi secara instan.
-
+```text
+.
+├── templates/               # Frontend (HTML & Tailwind CSS)
+├── app.py                   # Backend Flask Server
+├── short-term.ipynb         # Pipeline Training & EDA
+├── skin_cancer_model.h5     # Model Hasil Training
+├── dataset_sample.zip       # Sampel gambar untuk testing
+├── HAM10000_metadata.csv    # Metadata dataset
+└── README.md                # Dokumentasi proyek
