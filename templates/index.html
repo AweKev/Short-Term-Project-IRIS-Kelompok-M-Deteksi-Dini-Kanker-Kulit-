@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DermoVision AI - Proyek Short Term IRIS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medical: { light: '#f0fdfa', DEFAULT: '#0d9488', dark: '#0f766e' }
+                    },
+                    keyframes: {
+                        'fade-in-up': {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'grow-up': {
+                            '0%': { opacity: '0', transform: 'scaleY(0)' },
+                            '100%': { opacity: '1', transform: 'scaleY(1)' }
+                        },
+                        'scroll': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        },
+                        'shimmer': {
+                            '100%': { transform: 'translateX(100%)' }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'scan': {
+                            '0%, 100%': { top: '0%' },
+                            '50%': { top: '98%' }
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fade-in-up 0.6s ease-out both',
+                        'grow-up': 'grow-up 1s cubic-bezier(0.16, 1, 0.3, 1) both',
+                        'scroll': 'scroll 25s linear infinite',
+                        'shimmer': 'shimmer 2.5s infinite',
+                        'gradient-x': 'gradient-x 4s ease infinite',
+                        'scan': 'scan 3s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #0d9488; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0f766e; }
+        
+        /* Pola Tech Grid Background Main */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, #80808012 1px, transparent 1px),
+                              linear-gradient(to bottom, #80808012 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        
+        /* Pola Radar Grid untuk Chart */
+        .chart-grid {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen relative overflow-x-hidden bg-grid-pattern">
+
+    <!-- Efek Ambient Background Halus (Tanpa partikel yang mengganggu) -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute -top-[10%] -left-[5%] w-[40%] h-[50%] rounded-full bg-teal-200/20 blur-[100px] animate-pulse" style="animation-duration: 4s;"></div>
+        <div class="absolute top-[20%] -right-[10%] w-[40%] h-[40%] rounded-full bg-red-200/10 blur-[100px] animate-pulse" style="animation-duration: 5s;"></div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="bg-white/70 backdrop-blur-lg shadow-sm sticky top-0 z-50 animate-fade-in-up border-b border-gray-100">
+        <nav class="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-medical" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0Z" />
+                </svg>
+                <a href="/" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 tracking-tight">Dermo<span class="text-medical">Vision</span> AI</a>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+                <a href="#tentang-proyek" class="hover:text-medical transition">Tentang Proyek</a>
+                <a href="#dataset" class="hover:text-medical transition">Dataset HAM10000</a>
+                <a href="/analisis" class="bg-medical text-white px-6 py-2.5 rounded-full font-bold hover:bg-medical-dark hover:shadow-lg hover:shadow-medical/30 hover:ring-2 hover:ring-medical/50 transition-all duration-300">Alat Analisis</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="w-full flex-grow">
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12 space-y-24">
+            
+            <!-- HERO SECTION -->
+            <section id="tentang-proyek" class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start pt-8 animate-fade-in-up">
+                <div class="lg:col-span-7 space-y-8 relative">
+                    
+                    <div class="absolute -left-12 top-0 w-1 h-32 bg-gradient-to-b from-medical to-transparent opacity-20 hidden lg:block"></div>
+
+                    <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-teal-100 text-medical-dark px-4 py-2 rounded-full text-sm font-semibold tracking-wide shadow-sm hover:shadow-md transition-shadow">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-medical opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-medical"></span>
+                        </span>
+                        Short Term IRIS Project
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-700 leading-tight drop-shadow-sm">
+                        <!-- Animated Gradient ditambahkan di sini -->
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-medical via-teal-300 to-medical-dark animate-gradient-x">Did you know?</span> <br> 
+                        Sebuah Realitas yang Harus Kita Hadapi.
+                    </h1>
+
+                    <div class="text-lg text-gray-600 space-y-6 leading-relaxed text-justify relative z-10">
+                        <p>
+                            <strong>Kanker kulit</strong> adalah musuh dalam selimut yang merenggut <strong>ribuan nyawa</strong> setiap tahunnya; sebuah tragedi yang terjadi bukan karena penyakit ini tidak bisa disembuhkan, melainkan karena ia sering kali baru ditemukan saat <strong>deteksi sudah terlambat</strong> dan semuanya sudah tidak lagi memungkinkan.
+                        </p>
+
+                        <p>
+                            Sinyal <strong>peringatan dini</strong> itu sebenarnya sudah terpeta di permukaan kulit kita, namun sering kali menyamar sebagai bercak atau tahi lalat normal yang melampaui <strong>keterbatasan penglihatan manusia</strong> hingga sel kanker tersebut menyebar ke organ dalam.
+                        </p>
+                        
+                        <!-- Box Kutipan Premium dengan Ikon Quote -->
+                        <div class="p-8 bg-white/60 backdrop-blur-md border-l-4 border-medical rounded-r-2xl italic text-gray-700 shadow-lg relative overflow-hidden group hover:border-l-8 transition-all duration-300">
+                            <!-- Dekorasi Quote Raksasa -->
+                            <div class="absolute -top-6 -right-2 text-9xl font-serif text-teal-100/40 pointer-events-none group-hover:scale-110 group-hover:text-teal-200/40 transition-all duration-500 z-0">"</div>
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-teal-100/50 to-transparent rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-700"></div>
+                            <p class="relative z-10 text-[17px] leading-relaxed">
+                                "Kanker kulit memiliki tingkat kesembuhan <strong class="text-medical-dark">lebih dari 95%</strong> jika berhasil dideteksi sejak dini melalui lesi kulit."
+                            </p>
+                        </div>
+
+                        <p>
+                            Menanggapi <strong>penglihatan manusia yang terbatas</strong>, <strong>DermoVision AI</strong> hadir untuk melampaui batasan tersebut. Melalui kekuatan <strong>Deep Learning</strong>, teknologi ini mampu mengidentifikasi anomali mikroskopis yang luput dari mata telanjang, memastikan tanda-tanda awal tidak lagi terabaikan demi <strong>menyelamatkan lebih banyak nyawa</strong>.
+                        </p>
+                    </div>
+
+                    <!-- TECH STACK BADGES -->
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <div class="px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl text-xs font-bold text-gray-600 shadow-sm flex items-center gap-2 hover:border-orange-400 hover:text-orange-500 hover:shadow-md hover:scale-105 transition-all cursor-default">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.396 17.585l-4.102-2.368v-4.736l4.102-2.368 4.102 2.368v4.736l-4.102 2.368zM12 2L1.5 8.062v12.124L12 26l10.5-6.062V8.062L12 2zm0 21.574l-8.4-4.85V9.025L12 4.175l8.4 4.85v9.699L12 23.574z"/></svg>
+                            TensorFlow 2.x
+                        </div>
+                        <div class="px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl text-xs font-bold text-gray-600 shadow-sm flex items-center gap-2 hover:border-medical hover:text-medical hover:shadow-md hover:scale-105 transition-all cursor-default">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                            EfficientNetB0
+                        </div>
+                    </div>
+
+                    <!-- CTA BUTTON WITH SHIMMER & SCALE -->
+                    <div class="pt-6 relative inline-block">
+                        <div class="absolute inset-0 bg-medical blur-lg opacity-30 rounded-xl"></div>
+                        <a href="/analisis" class="relative overflow-hidden inline-flex items-center justify-center bg-gray-900 text-white px-10 py-4 rounded-xl font-bold hover:bg-medical transition-all duration-300 hover:scale-105 shadow-[0_10px_20px_rgba(0,0,0,0.15)] ring-4 ring-transparent hover:ring-medical/30 group">
+                            <!-- Shimmer animation overlay -->
+                            <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer pointer-events-none"></span>
+                            
+                            <span class="relative flex items-center gap-3">
+                                Mulai Analisis Gambar 
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN: GRAFIK -->
+                <div class="lg:col-span-5 relative animate-fade-in-up" style="animation-delay: 0.2s;">
+
+                    <!-- Kotak Hitam dengan Chart Grid & Efek Animasi -->
+                    <div class="p-8 bg-black rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-gray-800 transition duration-300 relative overflow-hidden group chart-grid">
+                        
+                        <!-- AI Scanner Line -->
+                        <div class="absolute left-0 w-full h-[2px] bg-medical shadow-[0_0_15px_#0d9488] z-30 animate-scan opacity-40 group-hover:opacity-100 pointer-events-none"></div>
+
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-medical to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20"></div>
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-medical/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div class="absolute top-0 right-0 p-4 z-20">
+                            <span class="text-[10px] font-mono text-green-400 bg-green-950/80 border border-green-500/50 px-2 py-1 rounded-full uppercase tracking-tighter shadow-[0_0_10px_rgba(74,222,128,0.2)]">IRIS_REPORT::V5</span>
+                        </div>
+
+                        <h3 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-2 flex items-center gap-3 relative z-20">
+                            <svg class="w-6 h-6 text-red-500 drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path></svg>
+                            TREN KEMATIAN GLOBAL
+                        </h3>
+
+                        <p class="text-xs text-gray-300 mb-10 leading-relaxed border-l-2 border-red-500 pl-3 relative z-20">
+                            Peningkatan jumlah kematian sebagian besar didorong oleh <strong class="text-white uppercase tracking-wider drop-shadow-sm">terlambatnya deteksi kanker kulit</strong>.
+                        </p>
+                        
+                        <div class="flex items-end gap-3 h-48 border-b border-gray-700/50 pb-3 mb-5 relative z-20">
+                            <!-- Batang 1 -->
+                            <div class="flex-1 bg-gray-800/80 hover:bg-red-500/90 transition-colors duration-300 rounded-t-xl relative group-chart h-[70%] backdrop-blur-sm border border-gray-700/50 opacity-0 animate-grow-up origin-bottom" style="animation-delay: 0.3s;">
+                                <span class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] text-gray-200 opacity-0 group-hover:opacity-100 transition whitespace-nowrap bg-gray-800 px-2 py-1 rounded border border-gray-600 font-bold shadow-xl">~57.0K</span>
+                            </div>
+                            <!-- Batang 2 -->
+                            <div class="flex-1 bg-gray-800/80 hover:bg-red-500/90 transition-colors duration-300 rounded-t-xl relative group-chart h-[75%] backdrop-blur-sm border border-gray-700/50 opacity-0 animate-grow-up origin-bottom" style="animation-delay: 0.4s;">
+                                <span class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] text-gray-200 opacity-0 group-hover:opacity-100 transition whitespace-nowrap bg-gray-800 px-2 py-1 rounded border border-gray-600 font-bold shadow-xl">~58.5K</span>
+                            </div>
+                            <!-- Batang 3 -->
+                            <div class="flex-1 bg-gray-800/80 hover:bg-red-500/90 transition-colors duration-300 rounded-t-xl relative group-chart h-[82%] backdrop-blur-sm border border-gray-700/50 opacity-0 animate-grow-up origin-bottom" style="animation-delay: 0.5s;">
+                                <span class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] text-gray-200 opacity-0 group-hover:opacity-100 transition whitespace-nowrap bg-gray-800 px-2 py-1 rounded border border-gray-600 font-bold shadow-xl">~60.0K</span>
+                            </div>
+                            <!-- Batang 4 -->
+                            <div class="flex-1 bg-gray-800/80 hover:bg-red-500/90 transition-colors duration-300 rounded-t-xl relative group-chart h-[88%] backdrop-blur-sm border border-gray-700/50 opacity-0 animate-grow-up origin-bottom" style="animation-delay: 0.6s;">
+                                <span class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] text-gray-200 opacity-0 group-hover:opacity-100 transition whitespace-nowrap bg-gray-800 px-2 py-1 rounded border border-gray-600 font-bold shadow-xl">~61.2K</span>
+                            </div>
+                            <!-- Batang 5 (2025) -->
+                            <div class="flex-1 bg-medical/90 hover:bg-red-600 transition-colors duration-300 rounded-t-xl relative group-chart h-[100%] shadow-[0_0_20px_rgba(13,148,136,0.5)] border border-medical/50 backdrop-blur-sm opacity-0 animate-grow-up origin-bottom" style="animation-delay: 0.7s;">
+                                <span class="absolute -top-10 left-1/2 -translate-x-1/2 text-xs text-white bg-red-600 px-2 py-1 rounded shadow-xl font-bold ring-2 ring-red-400/50">~62.8K+</span>
+                                <span class="animate-ping absolute inset-0 rounded-t-xl bg-medical opacity-40"></span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between text-[11px] text-gray-500 font-mono tracking-widest px-1 relative z-20">
+                            <span>2021</span><span>2022</span><span>2023</span><span>2024</span><span class="text-medical-light font-bold">2025</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INFINITE TICKER BANNER -->
+            <div class="w-full bg-gray-900 text-white py-3 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-800 relative group animate-fade-in-up" style="animation-delay: 0.4s;">
+                <div class="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-gray-900 to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-gray-900 to-transparent z-10 pointer-events-none"></div>
+                <div class="flex whitespace-nowrap w-[200%] animate-scroll text-sm font-mono tracking-widest group-hover:pause">
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> 10,015 Dermoscopy Images</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> 7 Diagnostic Categories</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> EfficientNetB0 Architecture</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> Real-time Analysis</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> Data Science & AI</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> 10,015 Dermoscopy Images</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> 7 Diagnostic Categories</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> EfficientNetB0 Architecture</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> Real-time Analysis</span>
+                    <span class="mx-8 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-medical shadow-[0_0_8px_#0d9488]"></span> Data Science & AI</span>
+                </div>
+            </div>
+
+            <!-- BAGIAN DATASET -->
+            <section id="dataset" class="bg-white/40 backdrop-blur-lg p-10 lg:p-16 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white relative overflow-hidden">
+                
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-medical/30 to-transparent"></div>
+                <div class="absolute bottom-0 right-0 w-64 h-64 bg-teal-100/40 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+                <div class="text-center max-w-3xl mx-auto mb-16 relative z-10 animate-fade-in-up" style="animation-delay: 0.1s;">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-4 drop-shadow-sm">Dataset HAM10000</h2>
+                    <p class="text-gray-600 text-lg">Model DermoVision dilatih menggunakan <strong>10.015 gambar dermoskopi</strong> dari populasi multietnis. Dataset ini terbagi ke dalam 7 kategori diagnostik utama:</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-5 relative z-10">
+                    <!-- Efek Masuk Beruntun (Cascading) pada kartu dataset -->
+                    <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-white/60 text-center flex flex-col items-center hover:shadow-[0_15px_30px_rgba(220,38,38,0.2)] hover:-translate-y-2 hover:bg-white hover:ring-2 hover:ring-red-400 hover:ring-offset-2 transition-all duration-300 group opacity-0 animate-fade-in-up" style="animation-delay: 0.2s;">
+                        <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center text-red-600 mb-4 font-bold text-sm shadow-inner group-hover:bg-red-600 group-hover:text-white transition-colors duration-300 ring-4 ring-transparent group-hover:ring-red-100">mel</div>
+                        <p class="font-bold text-xs text-gray-800 leading-tight">Melanoma</p>
+                        <p class="text-[10px] text-red-600 font-extrabold uppercase mt-2 tracking-tighter bg-red-50/80 px-2 py-1 rounded-md w-full">Kanker Ganas</p>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-white/60 text-center flex flex-col items-center hover:shadow-[0_15px_30px_rgba(13,148,136,0.2)] hover:-translate-y-2 hover:bg-white hover:ring-2 hover:ring-medical hover:ring-offset-2 transition-all duration-300 group opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
+                        <div class="w-14 h-14 bg-medical-light rounded-full flex items-center justify-center text-medical mb-4 font-bold text-sm shadow-inner group-hover:bg-medical group-hover:text-white transition-colors duration-300 ring-4 ring-transparent group-hover:ring-teal-50">nv</div>
+                        <p class="font-bold text-xs text-gray-800 leading-tight">Melanocytic Nevi</p>
+                        <p class="text-[10px] text-medical-dark font-extrabold uppercase mt-2 tracking-tighter bg-teal-50/80 px-2 py-1 rounded-md w-full">Tahi Lalat Jinak</p>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-white/60 text-center flex flex-col items-center hover:shadow-[0_15px_30px_rgba(220,38,38,0.2)] hover:-translate-y-2 hover:bg-white hover:ring-2 hover:ring-red-400 hover:ring-offset-2 transition-all duration-300 group opacity-0 animate-fade-in-up" style="animation-delay: 0.4s;">
+                        <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center text-red-600 mb-4 font-bold text-sm shadow-inner group-hover:bg-red-600 group-hover:text-white transition-colors duration-300 ring-4 ring-transparent group-hover:ring-red-100">bcc</div>
+                        <p class="font-bold text-xs text-gray-800 leading-tight">Basal Cell Ca.</p>
+                        <p class="text-[10px] text-red-600 font-extrabold uppercase mt-2 tracking-tighter bg-red-50/80 px-2 py-1 rounded-md w-full">Kanker Ganas</p>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-white/60 text-center flex flex-col items-center hover:shadow-[0_15px_30px_rgba(245,158,11,0.2)] hover:-translate-y-2 hover:bg-white hover:ring-2 hover:ring-amber-400 hover:ring-offset-2 transition-all duration-300 group opacity-0 animate-fade-in-up" style="animation-delay: 0.5s;">
+                        <div class="w-14 h-14 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 mb-4 font-bold text-sm shadow-inner group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300 ring-4 ring-transparent group-hover:ring-amber-100">akiec</div>
+                        <p class="font-bold text-xs text-gray-800 leading-tight">Actinic Keratoses</p>
+                        <p class="text-[10px] text-amber-600 font-extrabold uppercase mt-2 tracking-tighter bg-amber-50/80 px-2 py-1 rounded-md w-full">Pra-Kanker</p>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-white/60 text-center flex flex-col items-center hover:shadow-[0_15px_30px_rgba(13,148,136,0.2)] hover:-translate-y-2 hover:bg-white hover:ring-2 hover:ring-medical hover:ring-offset-2 transition-all duration-300 group opacity-0 animate-fade-in-up" style="animation-delay: 0.6s;">
+                        <div class="w-14 h-14 bg-medical-light rounded-full flex items-center justify-center text-medical mb-4 font-bold text-sm shadow-inner group-hover:bg-medical group-hover:text-white transition-colors duration-300 ring-4 ring-transparent group-hover:ring-teal-50">bkl</div>
+                        <p class="font-bold text-xs text-gray-800 leading-tight">Benign Keratosis</p>
+                        <p class="text-[10px] text-medical-dark font-extrabold uppercase mt-2 tracking-tighter bg-teal-50/80 px-2 py-1 rounded-md w-full">Bercak Jinak</p>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-white/60 text-center flex flex-col items-center hover:shadow-[0_15px_30px_rgba(13,148,136,0.2)] hover:-translate-y-2 hover:bg-white hover:ring-2 hover:ring-medical hover:ring-offset-2 transition-all duration-300 group opacity-0 animate-fade-in-up" style="animation-delay: 0.7s;">
+                        <div class="w-14 h-14 bg-medical-light rounded-full flex items-center justify-center text-medical mb-4 font-bold text-sm shadow-inner group-hover:bg-medical group-hover:text-white transition-colors duration-300 ring-4 ring-transparent group-hover:ring-teal-50">df</div>
+                        <p class="font-bold text-xs text-gray-800 leading-tight">Dermatofibroma</p>
+                        <p class="text-[10px] text-medical-dark font-extrabold uppercase mt-2 tracking-tighter bg-teal-50/80 px-2 py-1 rounded-md w-full">Lesi Jinak</p>
+                    </div>
+
+                    <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-white/60 text-center flex flex-col items-center hover:shadow-[0_15px_30px_rgba(13,148,136,0.2)] hover:-translate-y-2 hover:bg-white hover:ring-2 hover:ring-medical hover:ring-offset-2 transition-all duration-300 group opacity-0 animate-fade-in-up" style="animation-delay: 0.8s;">
+                        <div class="w-14 h-14 bg-medical-light rounded-full flex items-center justify-center text-medical mb-4 font-bold text-sm shadow-inner group-hover:bg-medical group-hover:text-white transition-colors duration-300 ring-4 ring-transparent group-hover:ring-teal-50">vasc</div>
+                        <p class="font-bold text-xs text-gray-800 leading-tight">Vasc. Lesions</p>
+                        <p class="text-[10px] text-medical-dark font-extrabold uppercase mt-2 tracking-tighter bg-teal-50/80 px-2 py-1 rounded-md w-full">Lesi Vaskular</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
+            <span class="text-sm font-bold text-white">&copy; 2026 Tim IRIS - Universitas Airlangga</span>
+            <div class="text-xs space-x-4 font-mono">
+                <span>Model: EfficientNetB0</span>
+                <span>Dataset: HAM10000</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
