@@ -2,9 +2,9 @@
 
 Ini merupakan sebuah proyek *Web App* berbasis *Deep Learning* yang dirancang untuk mengklasifikasikan 7 jenis lesi kulit secara otomatis. Proyek jangka pendek (*Short-Term Project*) ini bertujuan untuk membantu mendeteksi penyakit kanker kulit dan lesi lainnya secara cepat dan akurat, menggunakan teknik **Transfer Learning** dengan arsitektur **EfficientNetB0** guna mencapai keseimbangan antara akurasi prediksi yang tinggi dan efisiensi komputasi.
 
-🚀 **Live Demo Tersedia:** [Coba DermoVision AI di sini!](https://huggingface.co/spaces/KepinYUUU/DermoVision-AI)
+**Live Demo Tersedia:** [Coba Multi-class Skin Lesion Classification di sini!](https://bit.ly/Multi-classSkinLesionClassification)
 
-> **⏱️ Catatan Server:** Aplikasi ini di-hosting menggunakan layanan gratis dari Hugging Face Spaces. Jika tidak ada yang mengakses web ini selama kurang lebih 1-2 hari berturut-turut, server akan otomatis "tertidur" (*paused*) untuk menghemat daya. Jika saat diakses web terasa lambat atau *loading*, mohon tunggu sekitar 1-2 menit hingga sistem terbangun dan kembali menyala (*Running*) sepenuhnya.
+> **⏱️ Catatan Server:** Aplikasi ini di-hosting menggunakan layanan gratis dari Hugging Face Spaces. Jika tidak ada yang mengakses web ini selama kurang lebih 1-2 hari berturut-turut, server akan otomatis "tertidur" (*paused*) untuk menghemat daya. Jika saat diakses web terasa lambat atau *loading*, mohon tunggu sekitar 1-2 menit hingga sistem terbangun dan kembali menyala sepenuhnya.
 
 ---
 
@@ -18,7 +18,7 @@ Dataset yang digunakan untuk melatih model ini adalah **HAM10000** (*Human Again
 6. **nv**: Melanocytic nevi
 7. **vasc**: Vascular lesions
 
-> **⚠️ Catatan Dataset:** Dikarenakan ukuran dataset asli mencapai **~6GB** (melebihi batas GitHub 100MB), repositori ini hanya menyertakan **`dataset_sample.zip`** berisi 35 gambar (5 per kelas) untuk keperluan *testing* cepat. Dataset utuh dapat diunduh langsung di [Kaggle HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000).
+> **Catatan Dataset:** Dikarenakan ukuran dataset asli mencapai **~6GB** (melebihi batas GitHub 100MB), repositori ini hanya menyertakan **`dataset_sample.zip`** berisi 35 gambar (5 per kelas) untuk keperluan *testing* cepat. Dataset utuh dapat diunduh langsung di [Kaggle HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000).
 
 ---
 
