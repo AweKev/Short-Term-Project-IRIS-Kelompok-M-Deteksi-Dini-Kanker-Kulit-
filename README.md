@@ -7,13 +7,15 @@
 ## 📑 Daftar Isi
 1. [Tentang Proyek & Latar Belakang](#1-tentang-proyek--latar-belakang)
 2. [Fitur Utama](#2-fitur-utama)
-3. [Kelas Klasifikasi (Dataset)](#3-kelas-klasifikasi-dataset)
-4. [Teknologi & Detail Model](#4-teknologi--detail-model)
-5. [Alur Preprocessing Gambar](#5-alur-preprocessing-gambar)
-6. [Struktur Repositori](#6-struktur-repositori)
-7. [API Endpoint & Respons](#7-api-endpoint--respons)
-8. [Panduan Deployment Docker](#8-panduan-deployment-docker)
-9. [Troubleshooting Server](#9-troubleshooting-server)
+3. [Panduan Penggunaan (User Guide)](#3-panduan-penggunaan-user-guide)
+4. [Kelas Klasifikasi (Dataset)](#4-kelas-klasifikasi-dataset)
+5. [Teknologi & Detail Model](#5-teknologi--detail-model)
+6. [Alur Preprocessing Gambar](#6-alur-preprocessing-gambar)
+7. [Struktur Repositori](#7-struktur-repositori)
+8. [API Endpoint & Respons](#8-api-endpoint--respons)
+9. [Menjalankan Secara Lokal](#9-menjalankan-secara-lokal)
+10. [Panduan Deployment Docker](#10-panduan-deployment-docker)
+11. [Troubleshooting Server](#11-troubleshooting-server)
 
 ---
 
@@ -26,7 +28,15 @@
 * **Top-2 Predictions:** Menampilkan dua probabilitas prediksi tertinggi untuk memberikan konteks diagnosis yang lebih luas.
 * **Serverless Deployment:** Di-hosting penuh menggunakan kontainer Docker di ekosistem Hugging Face Spaces.
 
-## 3. Kelas Klasifikasi (Dataset)
+## 3. Panduan Penggunaan (User Guide)
+Untuk mencoba simulasi prediksi melalui *Live Demo*:
+1. Buka tautan web DermoVision AI.
+2. Siapkan gambar lesi kulit atau gunakan sampel dari file `dataset_sample.zip` yang ada di repositori ini.
+3. Klik area **Upload** pada web dan pilih gambar yang ingin dianalisis.
+4. Klik tombol **Analisis**.
+5. Sistem akan memproses gambar dan langsung menampilkan dua prediksi penyakit paling memungkinkan beserta persentase keyakinan AI (*Confidence Score*).
+
+## 4. Kelas Klasifikasi (Dataset)
 Model ini dilatih menggunakan dataset standar medis **HAM10000** (*Human Against Machine with 10,000 training images*). Kategori klinis yang didukung meliputi:
 1. **akiec**: Actinic keratoses (Pra-Kanker)
 2. **bcc**: Basal cell carcinoma (Ganas)
@@ -36,9 +46,7 @@ Model ini dilatih menggunakan dataset standar medis **HAM10000** (*Human Against
 6. **nv**: Melanocytic nevi (Jinak)
 7. **vasc**: Vascular lesions (Jinak)
 
-> *Dataset sampel (35 gambar) disertakan dalam repositori ini pada file `dataset_sample.zip` untuk keperluan testing.*
-
-## 4. Teknologi & Detail Model
+## 5. Teknologi & Detail Model
 ### Stack Teknologi
 * **Backend:** Python, Flask, Gunicorn/Werkzeug
 * **AI & Machine Learning:** TensorFlow 2.x, Keras, NumPy, Pillow
@@ -50,14 +58,14 @@ Model ini dilatih menggunakan dataset standar medis **HAM10000** (*Human Against
 * **Top Layers Customization:** `GlobalAveragePooling2D` -> `BatchNormalization` -> `Dropout(0.5)` -> `Dense(512, ReLU)` -> `Dense(7, Softmax)`.
 * **Handling Imbalance:** Menggunakan *Class Weights* saat *training* untuk memberikan penalti tinggi jika AI salah menebak kelas minoritas yang berbahaya (seperti Melanoma).
 
-## 5. Alur Preprocessing Gambar
+## 6. Alur Preprocessing Gambar
 Untuk memastikan akurasi saat inferensi di web, gambar yang diunggah pengguna akan melewati *pipeline* prapemrosesan yang ketat sebelum masuk ke model:
 1. **Format & Konversi:** Gambar dibaca via *byte stream* (`io.BytesIO`) dan dikonversi secara paksa ke format `RGB` menggunakan `PIL`.
 2. **Resizing:** Disesuaikan menjadi matriks **224x224 piksel** (syarat mutlak input EfficientNetB0).
 3. **Array Expansion:** Penambahan dimensi semu (`np.expand_dims`) dari `(224, 224, 3)` menjadi format *batch* `(1, 224, 224, 3)`.
 4. **Native Preprocessing:** Melewati fungsi `preprocess_input` bawaan Keras untuk EfficientNet agar distribusi nilai piksel identik dengan saat proses *training*.
 
-## 6. Struktur Repositori
+## 7. Struktur Repositori
 ```text
 .
 ├── templates/                 # Frontend UI (index.html, analisis.html)
@@ -70,7 +78,7 @@ Untuk memastikan akurasi saat inferensi di web, gambar yang diunggah pengguna ak
 └── dataset_sample.zip         # Sampel gambar HAM10000 untuk testing
 ```
 
-## 7. API Endpoint & Respons
+## 8. API Endpoint & Respons
 Backend Flask menyediakan endpoint REST API untuk memproses inferensi gambar secara *asynchronous* (digunakan oleh halaman UI `analisis.html` untuk memuat hasil tanpa *refresh* halaman).
 
 * **URL:** `/api/predict`
@@ -95,13 +103,23 @@ Backend Flask menyediakan endpoint REST API untuk memproses inferensi gambar sec
 }
 ```
 
-## 8. Panduan Deployment Docker
-Proyek ini dikonfigurasi secara khusus untuk dijalankan di dalam kontainer. Untuk menjalankan/mendeploy ulang:
+## 9. Menjalankan Secara Lokal
+Jika Anda ingin mengembangkan atau menguji aplikasi ini secara lokal di komputer Anda tanpa menggunakan Docker:
+1. Lakukan *clone* pada repositori ini.
+2. Buka terminal/CMD dan arahkan ke dalam direktori proyek.
+3. Instal semua pustaka yang dibutuhkan dengan menjalankan perintah:
+   `pip install -r requirements.txt`
+4. Jalankan server Flask:
+   `python app.py`
+5. Buka browser dan akses alamat lokal: `http://localhost:7860` atau `http://127.0.0.1:7860`
+
+## 10. Panduan Deployment Docker
+Proyek ini dikonfigurasi secara khusus untuk dijalankan di dalam kontainer. Untuk menjalankan/mendeploy ulang di platform cloud lain:
 1. Pastikan memiliki `Dockerfile` dengan instruksi mengekspos port `7860`.
 2. Pastikan file `app.py` berjalan pada *host* `0.0.0.0` dan *port* `7860`.
-3. Unggah seluruh direktori ke *Hugging Face Spaces* (pilih SDK: **Docker**).
-4. Sistem akan otomatis melakukan proses *build* kontainer berdasarkan `requirements.txt`.
+3. Unggah seluruh direktori ke platform cloud (misal: *Hugging Face Spaces*) dan pilih SDK: **Docker**.
+4. Sistem akan otomatis melakukan proses *build* kontainer.
 
-## 9. Troubleshooting Server
+## 11. Troubleshooting Server
 Web app ini berjalan di *tier* gratis platform cloud. Jika tidak ada trafik yang mengakses web selama 48 jam berturut-turut, server akan dialihkan ke mode tidur (*Paused/Sleeping*) secara otomatis. 
 * **Solusi:** Buka URL utama web app. Sistem akan membutuhkan waktu tunggu ekstra (sekitar 1-2 menit) saat *loading* awal untuk "membangunkan" kontainer kembali hingga statusnya *Running*.
