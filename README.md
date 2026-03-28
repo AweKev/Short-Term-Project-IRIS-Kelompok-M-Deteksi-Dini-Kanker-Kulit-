@@ -19,8 +19,3 @@ Proyek ini adalah implementasi *Deep Learning* untuk mendeteksi 7 jenis penyakit
 Dataset asli menggunakan **HAM10000** yang tersedia di Kaggle.
 > **Catatan**: Karena batas ukuran file di GitHub, dataset utuh (>2GB) tidak diunggah. Silakan unduh dataset resmi melalui [Link Kaggle ini](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000). Gunakan `dataset_sample.zip` di repo ini jika ingin melakukan pengujian aplikasi secara instan.
 
-## 🛠️ Cara Menjalankan (Local)
-1. Clone repositori ini.
-2. Instal dependensi:
-   ```bash
-   pip install tensorflow flask pandas numpy opencv-python
