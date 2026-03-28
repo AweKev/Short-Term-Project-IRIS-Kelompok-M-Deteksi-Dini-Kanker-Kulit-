@@ -72,7 +72,7 @@ Untuk memastikan akurasi saat inferensi di web, gambar yang diunggah pengguna ak
 4. **Native Preprocessing:** Melewati fungsi `preprocess_input` bawaan Keras untuk EfficientNet agar distribusi nilai piksel identik dengan saat proses *training*.
 
 ## 8. Struktur Repositori
-Repositori ini dikelola dalam format modular untuk memisahkan lingkungan *deployment* web, proses *training* model, dan penyimpanan data:
+Repositori ini dikelola dalam format modular untuk memisahkan lingkungan *deployment* web, proses *training* model, dan penyimpanan data referensi:
 
 ```text
 DermoVision-AI/
@@ -87,12 +87,13 @@ DermoVision-AI/
 │   ├── short-term.ipynb           # Notebook Pipeline Training & EDA
 │   └── skin_cancer_model.h5       # Model Neural Network Hasil Training
 │
-├── data/                          # Direktori penyimpanan Dataset & Metadata
-│   ├── dataset_sample.zip         # Sampel gambar HAM10000 untuk testing
-│   └── HAM10000_metadata.csv      # Metadata asli dataset HAM10000
+├── data/                          # Lingkungan Dataset
+│   ├── HAM10000_metadata.csv      # Metadata asli dataset (kunci mapping label)
+│   └── dataset_sample.zip         # Sampel gambar (35 item) untuk testing web
 │
 └── README.md                      # Dokumentasi utama proyek
 ```
+*(Catatan: Folder gambar raw `Images` tidak diunggah ke repositori GitHub untuk efisiensi kapasitas penyimpanan. File split dataset juga tidak disertakan karena pembagian train/val/test dilakukan secara dinamis di dalam notebook menggunakan library sklearn).*
 
 ## 9. API Endpoint & Respons
 Backend Flask menyediakan endpoint REST API untuk memproses inferensi gambar secara *asynchronous* (digunakan oleh halaman UI `analisis.html` untuk memuat hasil tanpa *refresh* halaman).
