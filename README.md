@@ -1,6 +1,6 @@
 # 👁️ DermoVision AI: Multi-class Skin Lesion Classification
 
-🚀 **Live Demo Tersedia:** [Coba DermoVision AI di sini!](https://huggingface.co/spaces/KepinYUUU/DermoVision-AI)
+🚀 **Live Demo Tersedia:** [Coba DermoVision AI di sini!](https://bit.ly/Multi-classSkinLesionClassification)
 
 ---
 
@@ -66,6 +66,7 @@ Untuk memastikan akurasi saat inferensi di web, gambar yang diunggah pengguna ak
 ├── requirements.txt           # Dependensi library
 ├── short-term.ipynb           # Notebook Pipeline Training & EDA
 ├── skin_cancer_model.h5       # Model Neural Network Hasil Training
+├── HAM10000_metadata.csv      # Metadata asli dataset HAM10000
 └── dataset_sample.zip         # Sampel gambar HAM10000 untuk testing
 ```
 
