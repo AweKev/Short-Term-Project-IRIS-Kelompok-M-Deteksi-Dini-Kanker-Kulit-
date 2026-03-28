@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.applications.efficientnet import preprocess_input
 from PIL import Image
 import numpy as np
 import io
@@ -44,6 +45,7 @@ def predict():
         return jsonify({'success': False, 'error': 'Tidak ada file gambar yang diunggah'})
     
     file = request.files['file']
+    
     if file.filename == '':
         return jsonify({'success': False, 'error': 'File kosong'})
 
@@ -57,8 +59,12 @@ def predict():
         img = img.resize((224, 224)) # Ukuran input EfficientNetB0
         
         img_array = img_to_array(img)
-        img_array = img_array / 255.0 # Rescale 0-1 seperti saat training
+        # HAPUS BARIS img_array / 255.0
+        
         img_batch = np.expand_dims(img_array, axis=0)
+        
+        # Gunakan preprocessor bawaan EfficientNet
+        img_batch = preprocess_input(img_batch)
 
         # Lakukan Inferensi / Prediksi
         predictions = model.predict(img_batch)[0]
@@ -94,4 +100,4 @@ def predict():
 
 if __name__ == '__main__':
     # Jalankan server
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=7860, debug=False)
